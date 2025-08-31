@@ -204,7 +204,7 @@ class Program
         if (hint == null)
         {
             Console.SetCursorPosition(0, Maze.Rows + 3);
-            Console.WriteLine("No path available!"); // no solution found
+            Console.WriteLine("No path available!"); // no 
             return;
         }
 
