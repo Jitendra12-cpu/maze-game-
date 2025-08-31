@@ -20,50 +20,79 @@ static class Maze
         {
             Mazes.Add(new string[]
             {
-                "# # # # # # # # # #",
-                "#     E           #",
-                "#   #   # #       #",
-                "#   P       #     #",
-                "# # # # # # # # # #"
-            });
-            Mazes.Add(new string[]
-            {
-                "# # # # # # # # # # #",
-                "# P       #         #",
-                "#   # #   #   #     #",
-                "#       #     E     #",
-                "# # # # # # # # # # #"
+                "##################################################",
+                "#P       #           #            #            E#",
+                "#  ####  ####   ####  ####   ####  ####  ####  #",
+                "#        #             #             #          #",
+                "#  ####      ####       ####       ####   ####  #",
+                "#        #             #             #          #",
+                "#  ####  ####   ####   ####   ####  ####  ####  #",
+                "#        #             #             #          #",
+                "#  ####      ####       ####       ####   ####  #",
+                "#        #             #             #          #",
+                "#  ####  ####   ####   ####   ####  ####  ####  #",
+                "#        #             #             #          #",
+                "#  ####      ####       ####       ####   ####  #",
+                "#                                               #",
+                "##################################################"
             });
         }
         else if (difficulty == "Medium")
         {
             Mazes.Add(new string[]
             {
-                "# # # # # # # # # # # #",
-                "# P     #   #         #",
-                "#   # #   #   #   #   #",
-                "#       #       #     #",
-                "#   #       #       E #",
-                "# # # # # # # # # # # #"
-            });
-            Mazes.Add(new string[]
-            {
-                "# # # # # # # # # # # # #",
-                "# P     #     #   #      #",
-                "#   #   # # #   #   #    #",
-                "#       #     #       E  #",
-                "# # # # # # # # # # # # #"
+                "######################################################################",
+                "#P       #       #           #         #           #              E#",
+                "#  ####  ####  ####   ####   ####   ####   ####   ####  ####   #### #",
+                "#        #          #           #         #           #             #",
+                "#  ####      ####      ####       ####       ####       ####   #### #",
+                "#        #          #           #         #           #             #",
+                "#  ####  ####  ####   ####   ####   ####   ####   ####  ####   #### #",
+                "#        #          #           #         #           #             #",
+                "#  ####      ####      ####       ####       ####       ####   #### #",
+                "#        #          #           #         #           #             #",
+                "#  ####  ####  ####   ####   ####   ####   ####   ####  ####   #### #",
+                "#        #          #           #         #           #             #",
+                "#  ####      ####      ####       ####       ####       ####   #### #",
+                "#        #          #           #         #           #             #",
+                "#  ####  ####  ####   ####   ####   ####   ####   ####  ####   #### #",
+                "#        #          #           #         #           #             #",
+                "#  ####      ####      ####       ####       ####       ####   #### #",
+                "#        #          #           #         #           #             #",
+                "#                                               #                           #",
+                "######################################################################"
             });
         }
         else // Hard
         {
             Mazes.Add(new string[]
             {
-                "# # # # # # # # # # # # # #",
-                "# P   #     #   #     #    #",
-                "#   #   # #   #   # #   #  #",
-                "#       #     #         E  #",
-                "# # # # # # # # # # # # # #"
+                "##################################################################################################",
+                "#P       #         #           #          #           #            #          #             E#",
+                "#  ####  ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####  #",
+                "#        #           #           #          #           #           #          #           #",
+                "#  ####      ####       ####       ####       ####       ####       ####       ####       #",
+                "#        #           #           #          #           #           #          #           #",
+                "#  ####  ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####  #",
+                "#        #           #           #          #           #           #          #           #",
+                "#  ####      ####       ####       ####       ####       ####       ####       ####       #",
+                "#        #           #           #          #           #           #          #           #",
+                "#  ####  ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####  #",
+                "#        #           #           #          #           #           #          #           #",
+                "#  ####      ####       ####       ####       ####       ####       ####       ####       #",
+                "#        #           #           #          #           #           #          #           #",
+                "#  ####  ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####  #",
+                "#        #           #           #          #           #           #          #           #",
+                "#  ####      ####       ####       ####       ####       ####       ####       ####       #",
+                "#        #           #           #          #           #           #          #           #",
+                "#  ####  ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####   ####  #",
+                "#        #           #           #          #           #           #          #           #",
+                "#                                               #                                                 #",
+                "#                                               #                                                 #",
+                "#                                               #                                                 #",
+                "#                                               #                                                 #",
+                "#                                               #                                                 #",
+                "##################################################################################################"
             });
         }
 
@@ -74,15 +103,20 @@ static class Maze
     public static void LoadMaze(int index)
     {
         string[] lines = Mazes[index];
+
+        int maxLength = 0;
+        foreach (var line in lines) if (line.Length > maxLength) maxLength = line.Length;
+
         Rows = lines.Length;
-        Cols = lines[0].Length;
+        Cols = maxLength;
         Grid = new char[Rows, Cols];
 
         for (int r = 0; r < Rows; r++)
         {
+            string line = lines[r].PadRight(maxLength, '#');
             for (int c = 0; c < Cols; c++)
             {
-                char ch = lines[r][c];
+                char ch = line[c];
                 Grid[r, c] = ch;
                 if (ch == 'P') PlayerPos = (r, c);
                 if (ch == 'E') ExitPos = (r, c);
@@ -92,24 +126,25 @@ static class Maze
 
     public static void Draw(int steps, TimeSpan time, bool showSteps, bool showTime, bool soundOn)
     {
-        Console.Clear();
         for (int r = 0; r < Rows; r++)
         {
+            Console.SetCursorPosition(0, r);
             for (int c = 0; c < Cols; c++)
                 Console.Write(Grid[r, c]);
-            Console.WriteLine();
         }
 
+        Console.SetCursorPosition(0, Rows);
+        Console.Write(" ".PadRight(Console.WindowWidth));
+        Console.SetCursorPosition(0, Rows);
         Console.Write("HUD: ");
         if (showSteps) Console.Write($"Steps={steps}  ");
         if (showTime) Console.Write($"Time={time:mm\\:ss}  ");
-        Console.WriteLine($"(W/A/S/D move, P pause, H hint, S sound {(soundOn ? "On" : "Off")})");
+        Console.Write($"(W/A/S/D move, P pause, H hint, F sound {(soundOn ? "On" : "Off")})");
     }
 
     public static bool IsWalkable(int r, int c)
     {
-        if (r < 0 || c < 0 || r >= Rows || c >= Cols) return false;
-        return Grid[r, c] != '#';
+        return !(r < 0 || c < 0 || r >= Rows || c >= Cols) && Grid[r, c] != '#';
     }
 
     public static void MovePlayer(int dr, int dc)
@@ -119,7 +154,6 @@ static class Maze
 
         if (!IsWalkable(nr, nc)) return;
 
-        // Trail effect
         if (Grid[r, c] == 'P') Grid[r, c] = '.';
 
         Grid[nr, nc] = (Grid[nr, nc] == 'E') ? 'E' : 'P';
@@ -136,7 +170,6 @@ static class Maze
         return true;
     }
 
-    // BFS Hint System
     public static (int dr, int dc)? GetHint()
     {
         var visited = new bool[Rows, Cols];
@@ -166,7 +199,6 @@ static class Maze
             }
         }
 
-        // Backtrack
         var step = ExitPos;
         while (parentMap.ContainsKey(step) && parentMap[step] != PlayerPos && parentMap[step] != null)
             step = parentMap[step].Value;
