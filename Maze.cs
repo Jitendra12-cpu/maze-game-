@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 static class Maze
-{
+{ // The 2D grid representing the maze
     public static char[,] Grid { get; private set; }
     public static int Rows { get; private set; }
     public static int Cols { get; private set; }
@@ -12,6 +12,7 @@ static class Maze
     private static List<string[]> Mazes;
     private static int CurrentMazeIndex = 0;
 
+    // Load mazes based on difficulty level
     public static void LoadMazes(string difficulty)
     {
         Mazes = new List<string[]>();
@@ -100,6 +101,8 @@ static class Maze
         LoadMaze(CurrentMazeIndex);
     }
 
+
+    // Load a specific maze by index
     public static void LoadMaze(int index)
     {
         string[] lines = Mazes[index];
@@ -110,6 +113,8 @@ static class Maze
         Rows = lines.Length;
         Cols = maxLength;
         Grid = new char[Rows, Cols];
+
+        // Fill the Grid and set Player/Exit positions
 
         for (int r = 0; r < Rows; r++)
         {
@@ -124,6 +129,8 @@ static class Maze
         }
     }
 
+    // Draw the maze and HUD on the console
+
     public static void Draw(int steps, TimeSpan time, bool showSteps, bool showTime, bool soundOn)
     {
         for (int r = 0; r < Rows; r++)
@@ -133,6 +140,8 @@ static class Maze
                 Console.Write(Grid[r, c]);
         }
 
+
+        // Draw HUD below the maze
         Console.SetCursorPosition(0, Rows);
         Console.Write(" ".PadRight(Console.WindowWidth));
         Console.SetCursorPosition(0, Rows);
@@ -141,12 +150,15 @@ static class Maze
         if (showTime) Console.Write($"Time={time:mm\\:ss}  ");
         Console.Write($"(W/A/S/D move, P pause, H hint, F sound {(soundOn ? "On" : "Off")})");
     }
+    // Check if a cell is walkable
+
 
     public static bool IsWalkable(int r, int c)
     {
         return !(r < 0 || c < 0 || r >= Rows || c >= Cols) && Grid[r, c] != '#';
     }
 
+    // Move player by delta row/col
     public static void MovePlayer(int dr, int dc)
     {
         var (r, c) = PlayerPos;
@@ -154,12 +166,16 @@ static class Maze
 
         if (!IsWalkable(nr, nc)) return;
 
+        // Leave a trail on old position
         if (Grid[r, c] == 'P') Grid[r, c] = '.';
+
+        // Update new position
 
         Grid[nr, nc] = (Grid[nr, nc] == 'E') ? 'E' : 'P';
         PlayerPos = (nr, nc);
     }
 
+    // Load next maze
     public static bool AtExit() => PlayerPos == ExitPos;
 
     public static bool NextMaze()
@@ -170,6 +186,7 @@ static class Maze
         return true;
     }
 
+    // BFS-based hint to next move
     public static (int dr, int dc)? GetHint()
     {
         var visited = new bool[Rows, Cols];
